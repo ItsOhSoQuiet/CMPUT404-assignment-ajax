@@ -74,11 +74,13 @@ def flask_post_json():
 @app.route("/")
 def hello():
     '''Return something coherent here.. perhaps redirect to /static/index.html '''
-    return None
+    # Redirect info from: https://stackoverflow.com/questions/14343812/redirecting-to-url-in-flask
+    return flask.redirect("/static/index.html", code=302)
 
 @app.route("/entity/<entity>", methods=['POST','PUT'])
 def update(entity):
     '''update the entities via this interface'''
+    updated_json = flask_post_json()
     return None
 
 @app.route("/world", methods=['POST','GET'])    
@@ -94,7 +96,9 @@ def get_entity(entity):
 @app.route("/clear", methods=['POST','GET'])
 def clear():
     '''Clear the world out!'''
-    return None
+    myWorld.clear()
+    clear_world = myWorld.world()
+    return json.dumps(clear_world)
 
 if __name__ == "__main__":
     app.run()
