@@ -84,8 +84,11 @@ def update(entity):
     # JSON info from: https://stackoverflow.com/questions/11332465/how-to-return-value-from-python-as-json
     # Iterating over JSON key/value pairs: https://stackoverflow.com/questions/12353288/getting-values-from-json-using-python
     updated_json = flask_post_json()
-    for key, value in updated_json.items():
-        myWorld.update(entity, key, value)
+    if request.method == 'POST':
+        for key, value in updated_json.items():
+            myWorld.update(entity, key, value)
+    else:
+        myWorld.set(entity, updated_json)
     get_updated_instance = myWorld.get(entity)
     return dumps(get_updated_instance)
 
