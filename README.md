@@ -19,3 +19,6 @@ I used the following webpages:
 * https://stackoverflow.com/questions/14343812/redirecting-to-url-in-flask for Flask redirects.
 * https://stackoverflow.com/questions/11332465/how-to-return-value-from-python-as-json for returning the JSON format.
 * https://stackoverflow.com/questions/12353288/getting-values-from-json-using-python for getting JSON key/value pairs.
+* https://scotch.io/tutorials/how-to-use-the-javascript-fetch-api-to-get-data for getting data with the Fetch API.
+
+I also consulted with Fanting Chen and Jacob Blazusiak about the flow of Fetching the data and updating the canvas.
