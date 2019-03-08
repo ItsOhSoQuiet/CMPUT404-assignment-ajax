@@ -31,9 +31,9 @@ var context = canvas.getContext("2d");
 var W = canvas.width  = window.innerWidth-6;
 var H = canvas.height = window.innerHeight-50;
 
-
-function sendJSONXMLHTTPRequest(url, objects, callback) {
-    var xhr = new XMLHttpRequest();
+// Changing everything to a Fetch Requestk
+function sendJSONFetchPOSTRequest(url, objects, methodToDo) {
+    /* var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
         if (xhr.readyState==4) {
             try {
@@ -49,7 +49,38 @@ function sendJSONXMLHTTPRequest(url, objects, callback) {
     };
     //XXX: POST to a URL
     //XXX: set the mimetype and the accept headers!
-    // Remember to use application/json !
+    // Remember to use application/json ! */
+    var promise = fetch(url, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(objects),
+    });
+    var promise2 = promise.then((getResponse) => {
+        return getResponse.json()
+    });
+    promise2.then((jsonPosted) => {
+        console.log("Data Posted: ", JSON.stringify(jsonPosted))
+    }).catch((postError) => {
+        console.error("Failed to POST, error: ", postError)
+    });
+}
+
+function sendJSONFetchGETRequest(url) {
+    var promise = fetch(url, {
+        method: "GET",
+    });
+    var promise2 = promise.then((getResponse) => {
+        return getResponse.json();
+    });
+    promise2.then((jsonGotten) => {
+        world = jsonGotten;
+        drawNextFrame();
+    }).catch((getError) => {
+        console.error("Failed to GET, error: ", getError)
+    });
 }
 
 
@@ -138,6 +169,7 @@ function addEntity(entity, data) {
     world[entity] = data;
     drawNextFrame(); // (but should we?)
     //XXX: Send a XHTML Request that updates the entity you just  modified!
+    sendJSONFetchPOSTRequest('../entity/' + entity, data)
 
 }
 
@@ -262,6 +294,7 @@ mouse.mousedraggers.push(function(x,y,clicked,e) {
 
 function update() {
     //XXX: TODO Get the world from the webservice using a XMLHTTPRequest
+    sendJSONFetchGETRequest('../world');
     drawFrame();
 }
 
